@@ -60,3 +60,4 @@ jobs:
       with:
         ruby-version: 2.7.x
     - run: gem install rubocop
+    - run: ./bin/rubocop

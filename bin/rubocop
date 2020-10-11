@@ -26,6 +26,7 @@ def make_exclude_list
   exclude_list.each do |exclude_file|
     dir = Dir.glob(File.join(ROOT_DIR, exclude_file))
     next if dir.empty?
+
     dir.each do |file|
       list[file] = true
     end
@@ -39,6 +40,7 @@ def make_check_files
   exclude_list = make_exclude_list
   list = []
   return [] if changed_files.nil?
+
   changed_files.each do |changed_file|
     list << changed_file unless exclude_list[changed_file]
   end

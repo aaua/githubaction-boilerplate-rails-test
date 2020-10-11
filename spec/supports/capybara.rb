@@ -7,7 +7,7 @@ RSpec.configure do |config|
 end
 
 Capybara.register_driver :chrome do |app|
-  args = %w(disable-gpu mute-audio window-size=375,800 lang=ja no-sandbox disable-extensions disable-desktop-notifications)
+  args = %w[disable-gpu mute-audio window-size=375,800 lang=ja no-sandbox disable-extensions disable-desktop-notifications]
   args << 'headless' unless ENV['NO_HEADLESS']
 
   Capybara::Selenium::Driver.new(

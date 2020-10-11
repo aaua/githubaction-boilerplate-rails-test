@@ -1,0 +1,34 @@
+require:
+  - rubocop-rails
+
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - vendor/**/*
+    - spec/**/*
+    - config/**/*
+    - Gemfile
+
+  TargetRubyVersion: 2.7
+# Metrics/AbcSize:
+#   Max: 22
+# Metrics/BlockLength:
+#   Max: 86
+# Metrics/LineLength:
+#   Max: 141
+Metrics/MethodLength:
+  Max: 40
+Rails:
+  Enabled: true
+Style/AsciiComments:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/IfInsideElse:
+  Enabled: false
+Style/MultilineTernaryOperator:
+  Enabled: false
+
+inherit_from: .rubocop_todo.yml

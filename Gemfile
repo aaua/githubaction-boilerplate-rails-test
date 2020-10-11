@@ -43,6 +43,7 @@ group :development, :test do
 
   # lint
   gem 'rubocop', require: false
+  gem 'rubocop-rails'
 end
 
 group :development do

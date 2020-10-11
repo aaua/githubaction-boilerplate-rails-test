@@ -1,0 +1,14 @@
+Naming/VariableNumber:
+  Enabled: false
+
+Style/RescueStandardError:
+  EnforcedStyle: implicit
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/SafeNavigation:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false

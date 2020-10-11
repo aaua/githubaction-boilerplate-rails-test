@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+require 'shellwords'
+require 'yaml'
+
+ROOT_DIR = `git rev-parse --show-toplevel`.strip
+
+def make_change_files
+  # NOTE: main、ブランチはmainからの差分でとる
+  base_commit = `git merge-base origin/main HEAD`.strip
+
+  output = `git diff #{base_commit} --staged --diff-filter=AM --name-only`
+  files = output.strip.split("\n")
+
+  return if files.empty?
+
+  changed_files = files.map do |f|
+    File.join(ROOT_DIR, f)
+  end
+  changed_files
+end
+
+def make_exclude_list
+  list = {}
+  rubocop_yml = YAML.load_file('.rubocop.yml')
+  exclude_list = rubocop_yml['AllCops']['Exclude']
+  exclude_list.each do |exclude_file|
+    dir = Dir.glob(File.join(ROOT_DIR, exclude_file))
+    next if dir.empty?
+
+    dir.each do |file|
+      list[file] = true
+    end
+  end
+  list
+end
+
+# NOTE: rubocopでcheckするfileの一覧のリストを生成する
+def make_check_files
+  changed_files = make_change_files
+  exclude_list = make_exclude_list
+  list = []
+  return [] if changed_files.nil?
+
+  changed_files.each do |changed_file|
+    list << changed_file unless exclude_list[changed_file]
+  end
+  list
+end
+
+check_files = make_check_files
+result = true
+
+if ARGV[0] == '-a'
+  result &= system("bundle exec rubocop -D -a #{check_files.shelljoin}") unless check_files.empty?
+else
+  result &= system("bundle exec rubocop -D #{check_files.shelljoin}") unless check_files.empty?
+end
+
+code = result ? 0 : 1
+
+if code == 1
+  puts "\x1b[31mrubocop エラーが発生\x1b[0m"
+  puts "\x1b[31m[./bin/rubocop -a] を実行、もしくは直接エラーを修正してください\x1b[0m"
+end
+
+exit(code)

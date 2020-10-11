@@ -8,7 +8,7 @@ RSpec.describe 'Homes', type: :request do
       it 'リクエストが成功すること' do
         subject
         expect(response.status).to eq(200)
-        expect(response.body).to include 'TOP'
+        expect(response.body).to include 'TOPtest'
       end
     end
   end

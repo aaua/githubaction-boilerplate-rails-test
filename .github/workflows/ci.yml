@@ -13,9 +13,18 @@ on:
 jobs:
   rspec:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        ports:
+          - 3306:3306
+        env:
+          TZ: Asia/Tokyo
+          MYSQL_ROOT_PASSWORD: pass
     env:
       RAILS_ENV: test
     steps:
+    - uses: satackey/action-docker-layer-caching@v0.0.8
     - uses: actions/checkout@v1
     - name: Set up Ruby 2.7
       uses: actions/setup-ruby@v1

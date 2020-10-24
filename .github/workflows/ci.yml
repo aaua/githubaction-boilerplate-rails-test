@@ -25,6 +25,7 @@ jobs:
       RAILS_ENV: test
     steps:
     - uses: satackey/action-docker-layer-caching@v0.0.8
+      continue-on-error: true
     - uses: actions/checkout@v1
     - name: Set up Ruby 2.7
       uses: actions/setup-ruby@v1
@@ -64,20 +65,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Ruby 2.7
-      uses: actions/setup-ruby@v1
+    - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7.x
+        bundler-cache: true
     - name: apt-get
       run: |
         sudo apt-get update
-    - name: Cache gems
-      uses: actions/cache@preview
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gem-
     - name: Cache node modules
       uses: actions/cache@preview
       with:
@@ -85,10 +78,6 @@ jobs:
         key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-node-
-    - name: bundle install
-      run: |
-        gem install bundler
-        bundle install --jobs 4 --retry 3 --path vendor/bundle
     - name: yarn install
       run:  yarn install --check-files
     - name: migration

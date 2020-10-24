@@ -5,7 +5,7 @@ feature 'Home', type: :feature, use_truncation: true do
     scenario '正常' do
       visit '/'
       expect(current_path).to eq '/'
-      expect(page).to have_content('TOP')
+      expect(page).to have_content('TEST')
     end
   end
 end
